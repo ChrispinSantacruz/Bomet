@@ -1,11 +1,98 @@
-<!doctype html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="refresh" content="0; url=/pages/instructions.html">
-    <title>Redirecting...</title>
-  </head>
-  <body>
-    Redirecting to instructions...
-  </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bomet Shooter - Instructions</title>
+    <link rel="stylesheet" href="/css/main.css" />
+    <link rel="icon" type="image/png" href="/images/personajes/vida.png" />
+    <style>
+        /* Fondo personalizado con la imagen proporcionada */
+        body {
+            min-height: 100vh;
+            min-width: 100vw;
+            margin: 0;
+            padding: 0;
+            font-family: inherit;
+            background: url('/images/backgroundinstrucciones.png') center center/cover no-repeat;
+            overflow-x: hidden;
+        }
+        .logo-instrucciones {
+            display: block;
+            margin: 3vh auto 2vh auto; /* bajar un poco el logo: espacio superior */
+            width: 38vw;
+            max-width: 420px;
+            min-width: 180px;
+        }
+        .center-instrucciones {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: unset;
+            margin-top: 1.5vh;
+        }
+        /* Show instructions image on desktop; hide on mobile */
+        .img-instrucciones {
+            width: 60vw;
+            max-width: 760px;
+            min-width: 300px;
+            height: auto;
+            border-radius: 0;
+            box-shadow: none;
+            display: block; /* visible on desktop */
+            margin: 2vh auto 0 auto; /* bajar ligeramente la imagen */
+        }
+        .btn-volver {
+            position: absolute;
+            top: 32px;
+            left: 32px;
+            z-index: 10;
+            background: linear-gradient(135deg, #00FFFF 0%, #22D3EE 100%);
+            color: #0A0A1A;
+            font-weight: bold;
+            font-family: inherit;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 10px;
+            padding: 12px 28px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3), 0 0 20px rgba(0, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-volver:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+        @media (max-width: 600px) {
+            .logo-instrucciones {
+                width: 72vw;
+                min-width: 120px;
+                margin-top: 13.5vh; /* bajar aún más el logo en móvil (otro 50% -> 13.5vh) */
+                transform: translateX(-3vw); /* mover un pelito a la izquierda en móvil */
+            }
+            .center-instrucciones {
+                min-height: 100vh;
+            }
+            .img-instrucciones {
+                display: none; /* hidden on mobile */
+            }
+            .btn-volver {
+                top: 12px;
+                left: 12px;
+                padding: 10px 18px;
+                font-size: 0.95rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="/pages/welcome.html" class="btn-volver" style="background:none;box-shadow:none;padding:0;border:none;top:24px;left:24px;width:auto;height:auto;">
+        <img src="/images/buttons/boton_back.png" alt="Back to Menu" style="width:160px;height:auto;display:block;" />
+    </a>
+    <img src="/images/components/logo.png" alt="Bomet Shooter Logo" class="logo-instrucciones" />
+    <div class="center-instrucciones">
+        <img src="/images/components/instrucciones.png" alt="Instructions" class="img-instrucciones" />
+    </div>
+</body>
 </html>
+
