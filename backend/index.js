@@ -25,6 +25,18 @@ const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/bomet'
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || '0.0.0.0'; // bind to all interfaces (Render recommends 0.0.0.0)
 
+// Basic validation of the connection string scheme so we fail fast with a helpful message
+const maskedUri = typeof MONGODB_URI === 'string' && MONGODB_URI.length > 60
+  ? MONGODB_URI.slice(0, 40) + '...' + MONGODB_URI.slice(-10)
+  : MONGODB_URI;
+if (!/^mongodb(\+srv)?:\/\//i.test(MONGODB_URI)) {
+  console.error('\nInvalid MONGODB_URI environment variable.');
+  console.error('The connection string must start with "mongodb://" or "mongodb+srv://".');
+  console.error('Current value (masked):', maskedUri);
+  console.error('If you are deploying on Render, set MONGODB_URI in the service Environment > Environment Variables.');
+  process.exit(1);
+}
+
 // Healthcheck route for platform load balancers
 app.get('/healthz', (req, res) => res.json({ ok: true, uptime: process.uptime() }));
 
@@ -117,6 +129,4 @@ app.get('/', (req, res) => {
   res.redirect('/pages/welcome.html');
 });
 
-app.listen(PORT, () => {
-  console.log(`Backend API listening on http://localhost:${PORT}`);
-});
+// Note: server is started from startServer() only after a successful MongoDB connection.
