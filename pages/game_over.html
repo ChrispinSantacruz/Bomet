@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Game Over - Bomet Shooter</title>
+    <link rel="stylesheet" href="../css/main.css" />
+    <style>
+        /* Game Over Background */
+        .galaxy-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('../images/backgroundgameover.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+        }
+
+        /* Game Over Title Animation */
+        .game-over-title {
+            text-shadow: 
+                0 0 10px #FF3366,
+                0 0 20px #FF3366,
+                0 0 30px #FF3366,
+                0 0 40px #FF3366;
+            animation: game-over-pulse 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes game-over-pulse {
+            0% { 
+                text-shadow: 
+                    0 0 10px #FF3366,
+                    0 0 20px #FF3366,
+                    0 0 30px #FF3366;
+                transform: scale(1);
+            }
+            100% { 
+                text-shadow: 
+                    0 0 15px #FF3366,
+                    0 0 25px #FF3366,
+                    0 0 35px #FF3366,
+                    0 0 45px #FF3366;
+                transform: scale(1.02);
+            }
+        }
+
+        /* Score Display Animation */
+        .final-score {
+            text-shadow: 
+                0 0 10px #FFFF00,
+                0 0 20px #FFFF00,
+                0 0 30px #FFFF00;
+            animation: score-glow 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes score-glow {
+            0% { 
+                text-shadow: 
+                    0 0 10px #FFFF00,
+                    0 0 20px #FFFF00,
+                    0 0 30px #FFFF00;
+            }
+            100% { 
+                text-shadow: 
+                    0 0 15px #FFFF00,
+                    0 0 25px #FFFF00,
+                    0 0 35px #FFFF00,
+                    0 0 45px #FFFF00;
+            }
+        }
+
+        /* High Score Celebration */
+        .high-score-celebration {
+            animation: celebration-bounce 1s ease-out;
+        }
+
+        @keyframes celebration-bounce {
+            0% { 
+                transform: scale(0.8) translateY(20px);
+                opacity: 0;
+            }
+            50% { 
+                transform: scale(1.1) translateY(-10px);
+                opacity: 1;
+            }
+            100% { 
+                transform: scale(1) translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Button Animations */
+        .neon-button {
+            background: linear-gradient(135deg, #00FFFF 0%, #22D3EE 100%);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(0, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .neon-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                0 6px 25px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(0, 255, 255, 0.5),
+                0 0 50px rgba(0, 255, 255, 0.2);
+        }
+
+        .neon-button:active {
+            transform: translateY(0) scale(0.98);
+            transition-duration: 0.1s;
+        }
+
+        .secondary-button {
+            background: linear-gradient(135deg, #FF00FF 0%, #D946EF 100%);
+            box-shadow: 
+                0 4px 20px rgba(0, 0, 0, 0.3),
+                0 0 20px rgba(255, 0, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .secondary-button:hover {
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 
+                0 6px 25px rgba(0, 0, 0, 0.4),
+                0 0 30px rgba(255, 0, 255, 0.5),
+                0 0 50px rgba(255, 0, 255, 0.2);
+        }
+
+        .secondary-button:active {
+            transform: translateY(0) scale(0.98);
+            transition-duration: 0.1s;
+        }
+
+        /* Fade In Animations */
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        .fade-in-delay-1 {
+            animation: fadeIn 1.2s ease-out forwards;
+        }
+
+        .fade-in-delay-2 {
+            animation: fadeIn 1.4s ease-out forwards;
+        }
+
+        .fade-in-delay-3 {
+            animation: fadeIn 1.6s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stats Display */
+        .stat-item {
+            background: rgba(26, 26, 46, 0.6);
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 
+                0 2px 10px rgba(0, 0, 0, 0.3),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        }
+
+        /* Mobile Optimizations */
+        @media (max-width: 768px) {
+            .game-over-container {
+                padding: 1rem;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            
+            .action-buttons button {
+                width: 100%;
+                min-height: 56px; /* Touch-friendly size */
+            }
+        }
+
+        /* Particle Effects */
+        .particle-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: #00FFFF;
+            border-radius: 50%;
+            animation: float-particle 8s linear infinite;
+            opacity: 0.7;
+        }
+
+        @keyframes float-particle {
+            0% {
+                transform: translateY(100vh) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.7;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateY(-10vh) translateX(50px);
+                opacity: 0;
+            }
+        }
+
+        /* Action Buttons - responsive positioning and scale */
+        .action-btn-wrap {
+            display: inline-block;
+            /* default: larger and dropped down */
+            transform: translateY(80px) scale(0.8);
+            transition: transform 220ms ease;
+        }
+
+        /* Keep consistent scale across breakpoints (0.8 requested) */
+        @media (max-width: 1024px) {
+            .action-btn-wrap { transform: translateY(60px) scale(0.8); }
+        }
+
+        /* Mobile: bring buttons up slightly but keep scale 0.8 for touch targets */
+        @media (max-width: 768px) {
+            .action-btn-wrap { transform: translateY(40px) scale(0.8); }
+        }
+
+        /* Small phones: minimal translate, keep scale 0.8 */
+        @media (max-width: 480px) {
+            .action-btn-wrap { transform: translateY(20px) scale(0.8); }
+        }
+
+        /* Make image elements act like buttons (accessible + interactive) */
+        .action-img-btn {
+            background: transparent;
+            border: none;
+            padding: 0;
+            margin: 0;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .action-img-btn img {
+            display: block;
+            transition: transform 200ms ease;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .action-img-btn:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fbometshoo6010back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center font-body overflow-hidden">
+    <script>
+        // Optionally set backend URL; leave empty to use localStorage-only behavior
+        if (!window.__BACKEND_URL__) {
+            if ((location.hostname === 'localhost' || location.hostname === '127.0.0.1') && location.port === '5500') {
+                window.__BACKEND_URL__ = 'http://localhost:3000';
+            } else {
+                window.__BACKEND_URL__ = '';
+            }
+        }
+    </script>
+    <!-- Game Over Background -->
+    <div class="galaxy-bg"></div>
+
+    <!-- Floating Particles -->
+    <div class="particle-container" id="particleContainer"></div>
+
+    <!-- Main Game Over Container -->
+    <div class="game-over-container w-full max-w-2xl mx-auto px-6 py-8 text-center fade-in">
+        <!-- Game Over Title -->
+                <!-- Game Over Title -->
+        <div class="mb-8">
+            <p class="text-text-secondary text-lg md:text-xl font-light">
+                Your ship has been destroyed! But every end is a new beginning...
+            </p>
+        </div>
+
+    <!-- Player name placeholder (hidden) - required by JS to avoid null errors -->
+    <div id="playerName" class="hidden" aria-hidden="true"></div>
+
+        <!-- Score Display -->
+        <div class="bg-surface/30 backdrop-blur-md rounded-xl p-8 border border-primary/20 shadow-neon-primary-strong mb-8 fade-in-delay-1">
+            <!-- Final Score -->
+            <div class="mb-6">
+                <p class="text-text-secondary text-lg mb-2">Final Score</p>
+                <div class="final-score font-data text-6xl md:text-8xl font-bold text-accent" id="finalScore">
+                    0
+                </div>
+            </div>
+
+            <!-- High Score Message -->
+            <div id="highScoreMessage" class="hidden high-score-celebration mb-6">
+                <div class="bg-success/20 border border-success/40 rounded-lg p-4 mb-4">
+                    <h3 class="font-heading text-2xl font-bold text-success mb-2">
+                        🎉 NEW HIGH SCORE! 🎉
+                    </h3>
+                    <p class="text-success/80">
+                        Congratulations! You've made the leaderboard
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons flex flex-col md:flex-row justify-center gap-4 fade-in-delay-3 mt-16">
+            <div class="action-btn-wrap">
+                <button id="playAgainBtn" class="action-img-btn" aria-label="Play Again">
+                    <img src="../images/buttons/botonplayagain.png" alt="Play Again" class="max-w-32">
+                </button>
+            </div>
+            <div class="action-btn-wrap">
+                <button id="backToMenuBtn" class="action-img-btn" aria-label="Back to Menu">
+                    <img src="../images/buttons/boton_back.png" alt="Back to Menu" class="max-w-32">
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Get game data from localStorage or URL parameters
+            const gameData = getGameData();
+            const playerName = localStorage.getItem('bometPlayerName') || 'Player';
+            
+            // Display player name
+            document.getElementById('playerName').textContent = playerName;
+            
+            // Display final score and stats
+            displayGameResults(gameData);
+            
+            // Check for high score
+            checkHighScore(gameData.finalScore, playerName);
+            
+            // Initialize particle effects
+            initParticleEffects();
+            
+            // Setup button event listeners
+            setupEventListeners();
+            
+            // Auto-save score to leaderboard
+            saveScoreToLeaderboard(gameData.finalScore, playerName, gameData);
+        });
+
+        function getGameData() {
+            // Try to get data from localStorage first (set by game)
+            const savedGameData = localStorage.getItem('bometGameResults');
+            if (savedGameData) {
+                try {
+                    const data = JSON.parse(savedGameData);
+                    // Validate the data has required properties
+                    if (data.finalScore !== undefined && data.enemiesDestroyed !== undefined) {
+                        localStorage.removeItem('bometGameResults'); // Clean up
+                        return data;
+                    }
+                } catch (e) {
+                    console.error('Error parsing game results:', e);
+                }
+            }
+            
+            // Fallback: try old format
+            const oldScore = localStorage.getItem('bometFinalScore');
+            if (oldScore && !isNaN(parseInt(oldScore))) {
+                const score = parseInt(oldScore);
+                localStorage.removeItem('bometFinalScore'); // Clean up
+                return {
+                    finalScore: score,
+                    enemiesDestroyed: Math.floor(score / 15), // Estimate based on score
+                    powerUpsCollected: Math.floor(score / 100), // Estimate
+                    survivalTime: Math.floor(score / 10), // Estimate
+                    shotsFired: Math.floor(score / 5), // Estimate
+                    shotsHit: Math.floor(score / 8), // Estimate
+                    accuracy: Math.floor((score / 8) / (score / 5) * 100) || 0
+                };
+            }
+            
+            // Ultimate fallback: URL parameters (shouldn't normally happen but just in case)
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlScore = parseInt(urlParams.get('score'));
+            if (urlScore && !isNaN(urlScore)) {
+                return {
+                    finalScore: urlScore,
+                    enemiesDestroyed: parseInt(urlParams.get('enemies')) || Math.floor(urlScore / 15),
+                    powerUpsCollected: parseInt(urlParams.get('powerups')) || Math.floor(urlScore / 100),
+                    survivalTime: parseInt(urlParams.get('time')) || Math.floor(urlScore / 10),
+                    shotsFired: parseInt(urlParams.get('shots')) || Math.floor(urlScore / 5),
+                    shotsHit: parseInt(urlParams.get('hits')) || Math.floor(urlScore / 8),
+                    accuracy: Math.round(((parseInt(urlParams.get('hits')) || Math.floor(urlScore / 8)) / 
+                                       (parseInt(urlParams.get('shots')) || Math.floor(urlScore / 5))) * 100) || 0
+                };
+            }
+            
+            // No game data found - this shouldn't happen in normal gameplay
+            // Return minimal default values
+            console.warn('No game data found, using defaults');
+            return {
+                finalScore: 0,
+                enemiesDestroyed: 0,
+                powerUpsCollected: 0,
+                survivalTime: 0,
+                shotsFired: 0,
+                shotsHit: 0,
+                accuracy: 0
+            };
+        }
+
+        function displayGameResults(gameData) {
+            // Animate score counting up
+            animateNumber('finalScore', 0, gameData.finalScore, 2000);
+            
+            // Display other stats with delays
+            setTimeout(() => animateNumber('enemiesDestroyed', 0, gameData.enemiesDestroyed, 1000), 500);
+            setTimeout(() => animateNumber('powerUpsCollected', 0, gameData.powerUpsCollected, 1000), 700);
+            setTimeout(() => animateNumber('survivalTime', 0, gameData.survivalTime, 1000, 's'), 900);
+            
+            // Display accuracy
+            const accuracy = gameData.accuracy || 0;
+            setTimeout(() => animateNumber('accuracy', 0, accuracy, 1000, '%'), 1100);
+        }
+
+        function animateNumber(elementId, start, end, duration, suffix = '') {
+            const element = document.getElementById(elementId);
+            const startTime = performance.now();
+            
+            function update(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Easing function for smooth animation
+                const easeOut = 1 - Math.pow(1 - progress, 3);
+                const current = Math.round(start + (end - start) * easeOut);
+                
+                if (!element) return; // element may not exist in some load scenarios
+                element.textContent = current.toLocaleString('en-US') + suffix;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(update);
+                }
+            }
+            
+            requestAnimationFrame(update);
+        }
+
+        function checkHighScore(finalScore, playerName) {
+            const leaderboard = getLeaderboard();
+            const isHighScore = leaderboard.length < 5 || finalScore > leaderboard[leaderboard.length - 1].score;
+            
+            if (isHighScore) {
+                setTimeout(() => {
+                    document.getElementById('highScoreMessage').classList.remove('hidden');
+                    
+                    // Add celebration particles
+                    createCelebrationParticles();
+                }, 2500);
+            }
+        }
+
+        function getLeaderboard() {
+            const saved = localStorage.getItem('bometLeaderboard');
+            return saved ? JSON.parse(saved) : [];
+        }
+
+        function saveScoreToLeaderboard(score, playerName, gameData) {
+            const leaderboard = getLeaderboard();
+            
+            const newEntry = {
+                name: playerName,
+                score: score,
+                date: new Date().toISOString(),
+                stats: {
+                    enemies: gameData.enemiesDestroyed || 0,
+                    powerups: gameData.powerUpsCollected || 0,
+                    time: gameData.survivalTime || 0,
+                    accuracy: gameData.accuracy || 0
+                }
+            };
+            
+            leaderboard.push(newEntry);
+            leaderboard.sort((a, b) => b.score - a.score);
+            
+            // Keep only top 5
+            if (leaderboard.length > 5) {
+                leaderboard.splice(5);
+            }
+            
+            localStorage.setItem('bometLeaderboard', JSON.stringify(leaderboard));
+
+            // Also send score to backend API (if available). Non-blocking but will cleanup localStorage on success.
+            try {
+                const backend = window.__BACKEND_URL__ || '';
+                const url = backend ? (backend + '/api/scores') : '/api/scores';
+                const payload = { playerName: playerName, score: Number(score), date: newEntry.date, stats: newEntry.stats };
+                console.log('Attempting to save score to backend:', url, payload);
+                fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                }).then(async (res) => {
+                    const text = await res.text();
+                    console.log('Backend response status:', res.status, 'body:', text);
+                    if (res.ok) {
+                        // Backend stored the score; remove local leaderboard to let backend be authoritative
+                        try { localStorage.removeItem('bometLeaderboard'); } catch (e) { /* ignore */ }
+                        showNotification('Score saved to server!');
+                    } else {
+                        showNotification('Server save failed (see console).');
+                    }
+                }).catch(err => {
+                    console.warn('Backend save failed, using local leaderboard only.', err);
+                    showNotification('Server unavailable; score saved locally.');
+                });
+            } catch (err) {
+                console.warn('Error preparing backend save', err);
+            }
+        }
+
+        function setupEventListeners() {
+            // Play Again button
+            const playAgainBtn = document.getElementById('playAgainBtn');
+            if (playAgainBtn) {
+                playAgainBtn.addEventListener('click', function() {
+                this.textContent = '🚀 STARTING...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    window.location.href = 'game_canvas.html';
+                }, 800);
+                });
+            }
+            
+            // Back to Menu button
+            const backToMenuBtn = document.getElementById('backToMenuBtn');
+            if (backToMenuBtn) {
+                backToMenuBtn.addEventListener('click', function() {
+                this.textContent = '🏠 LOADING...';
+                this.disabled = true;
+                
+                setTimeout(() => {
+                    window.location.href = 'welcome.html';
+                }, 800);
+                });
+            }
+            
+            // View Leaderboard button
+            const viewLeaderboardBtn = document.getElementById('viewLeaderboardBtn');
+            if (viewLeaderboardBtn) {
+                viewLeaderboardBtn.addEventListener('click', function() {
+                    window.location.href = 'leaderboard.html';
+                });
+            }
+            
+            // Share Score button
+            const shareScoreBtn = document.getElementById('shareScoreBtn');
+            if (shareScoreBtn) {
+                shareScoreBtn.addEventListener('click', function() {
+                    const finalScoreEl = document.getElementById('finalScore');
+                    const playerNameEl = document.getElementById('playerName');
+                    const finalScore = finalScoreEl ? finalScoreEl.textContent : '';
+                    const playerNameText = playerNameEl ? playerNameEl.textContent : '';
+
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'Bomet Shooter - My Score',
+                            text: `I scored ${finalScore} points in Bomet Shooter! 🚀`,
+                            url: window.location.origin
+                        });
+                    } else {
+                        // Fallback for browsers without Web Share API
+                        const text = `I scored ${finalScore} points in Bomet Shooter! 🚀 Play at ${window.location.origin}`;
+                        if (navigator.clipboard && navigator.clipboard.writeText) {
+                            navigator.clipboard.writeText(text).then(() => {
+                                showNotification('Score copied to clipboard!');
+                            }).catch(() => {
+                                showNotification('Could not copy to clipboard');
+                            });
+                        } else {
+                            showNotification('Share not supported');
+                        }
+                    }
+                });
+            }
+        }
+
+        function initParticleEffects() {
+            const container = document.getElementById('particleContainer');
+            const colors = ['#00FFFF', '#FF00FF', '#FFFF00', '#00FF88'];
+            
+            function createParticle() {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                particle.style.animationDelay = Math.random() * 2 + 's';
+                particle.style.animationDuration = (Math.random() * 4 + 6) + 's';
+                
+                container.appendChild(particle);
+                
+                // Remove particle after animation
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.remove();
+                    }
+                }, 10000);
+            }
+            
+            // Create initial particles
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => createParticle(), i * 200);
+            }
+            
+            // Continue creating particles
+            setInterval(createParticle, 1000);
+        }
+
+        function createCelebrationParticles() {
+            const container = document.getElementById('particleContainer');
+            const colors = ['#FFFF00', '#00FF88', '#00FFFF'];
+            
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const particle = document.createElement('div');
+                    particle.className = 'particle';
+                    particle.style.left = (40 + Math.random() * 20) + '%';
+                    particle.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    particle.style.width = '6px';
+                    particle.style.height = '6px';
+                    particle.style.animationDuration = '3s';
+                    
+                    container.appendChild(particle);
+                    
+                    setTimeout(() => {
+                        if (particle.parentNode) {
+                            particle.remove();
+                        }
+                    }, 3000);
+                }, i * 100);
+            }
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 bg-success text-background px-6 py-3 rounded-lg font-medium z-50 fade-in';
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                setTimeout(() => {
+                    if (notification.parentNode) {
+                        notification.remove();
+                    }
+                }, 300);
+            }, 3000);
+        }
+
+        // Prevent accidental navigation
+        window.addEventListener('beforeunload', function(e) {
+            // Only show warning if user hasn't clicked any navigation buttons
+            const buttons = document.querySelectorAll('button');
+            const anyButtonClicked = Array.from(buttons).some(btn => btn.disabled);
+            
+            if (!anyButtonClicked) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+
+        // Handle keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'Enter':
+                case ' ':
+                    e.preventDefault();
+                    const playBtn = document.getElementById('playAgainBtn');
+                    if (playBtn) playBtn.click();
+                    break;
+                case 'Escape':
+                    e.preventDefault();
+                    const backBtn = document.getElementById('backToMenuBtn');
+                    if (backBtn) backBtn.click();
+                    break;
+                case 'l':
+                case 'L':
+                    if (e.ctrlKey || e.metaKey) {
+                        e.preventDefault();
+                        const lbBtn = document.getElementById('viewLeaderboardBtn');
+                        if (lbBtn) lbBtn.click();
+                    }
+                    break;
+            }
+        });
+    </script>
+<script id="dhws-dataInjector" src="/dhws-data-injector.js"></script>
+</body>
+</html>
