@@ -23,10 +23,30 @@ app.use(express.static(path.join(__dirname, '..', 'public')));
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/bomet';
 const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0'; // bind to all interfaces (Render recommends 0.0.0.0)
 
-mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => console.log('Connected to MongoDB'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// Healthcheck route for platform load balancers
+app.get('/healthz', (req, res) => res.json({ ok: true, uptime: process.uptime() }));
+
+async function startServer() {
+  try {
+    // Connect to MongoDB first, then start listening. This avoids accepting requests when DB is unavailable.
+    await mongoose.connect(MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    // mask the connection string for logs
+    const hiddenUri = typeof MONGODB_URI === 'string' && MONGODB_URI.length > 40 ? MONGODB_URI.slice(0, 40) + '...' : MONGODB_URI;
+    console.log('Connected to MongoDB:', hiddenUri);
+
+    app.listen(PORT, HOST, () => {
+      console.log(`Backend API listening on http://${HOST}:${PORT}`);
+    });
+  } catch (err) {
+    console.error('Failed to start server — MongoDB connection error:', err && err.stack ? err.stack : err);
+    // Exit with non-zero so the platform (Render) knows the start failed and can retry
+    process.exit(1);
+  }
+}
+
+startServer();
 
 const scoreSchema = new mongoose.Schema({
   playerName: { type: String, required: true },
