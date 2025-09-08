@@ -1,0 +1,19 @@
+# Example Render service manifest for the backend (fill values before using)
+# NOTE: keep secrets out of this file in git; prefer setting them in the Render dashboard.
+services:
+  - type: web
+    name: bomet-backend
+    env: node
+    plan: free
+    repo: "<REPLACE_WITH_YOUR_GIT_REPO_URL>"
+    branch: main
+    buildCommand: "cd backend; npm install"
+    startCommand: "cd backend; npm start"
+    autoDeploy: true
+    healthCheckPath: "/healthz"
+    envVars:
+      - key: MONGODB_URI
+        value: "<SET_IN_DASHBOARD>"
+      - key: ADMIN_KEY
+        value: "<SET_IN_DASHBOARD_OPTIONAL>"
+      # Render will provide a PORT env var automatically when the service runs
