@@ -1,18 +1,12 @@
-# Render manifest for Bomet repository
-# This file configures two services:
-#  - bomet-backend: a Node web service that runs from the backend/ folder
-#  - bomet-frontend: a static site served from the public/ folder
-#
-# Before using, replace <REPO_URL> with your repository URL in the Render dashboard
-# and set environment variables in the Render dashboard (do NOT commit secrets here).
+# Render manifest (minimal) for Bomet — backend service only
+# Keep this file minimal so Render's Blueprint detection (repo+branch in the UI)
+# can apply the manifest without conflicts. Do NOT commit secrets here.
 
 services:
   - type: web
     name: bomet-backend
     env: node
     plan: free
-    repo: "<REPO_URL>"
-    branch: main
     rootDir: backend
     buildCommand: "npm install"
     startCommand: "npm start"
@@ -24,16 +18,8 @@ services:
       - key: ADMIN_KEY
         value: "<SET_IN_DASHBOARD_OPTIONAL>"
 
-static_sites:
-  - name: bomet-frontend
-    repo: "<REPO_URL>"
-    branch: main
-    rootDir: "."
-    buildCommand: ""
-    publishPath: "public"
-    autoDeploy: true
-
 # Notes:
-# - Replace <REPO_URL> with the HTTPS git URL for your repository.
-# - Configure the environment variables in the Render dashboard for security.
-# - If you prefer to host the frontend separately (e.g., Vercel), remove the static_sites section.
+# - When creating the Blueprint in Render pick this repository and branch (main).
+# - Set MONGODB_URI and ADMIN_KEY in the Render dashboard (Environment > Environment Variables).
+# - If you'd like Render to also host the frontend, I can add a separate static site
+#   configuration after you confirm the backend entry is accepted.
