@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Game Over - Bomet Shooter</title>
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="icon" type="image/png" href="/images/personajes/vida.png" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="icon" type="image/png" href="../images/personajes/vida.png" />
     <style>
         /* Game Over Background */
         .galaxy-bg {
@@ -14,7 +14,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: url('/images/backgroundgameover.png');
+            background-image: url('../images/backgroundgameover.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -329,12 +329,12 @@
         <div class="action-buttons flex flex-col md:flex-row justify-center gap-4 fade-in-delay-3 mt-16">
             <div class="action-btn-wrap">
                 <button id="playAgainBtn" class="action-img-btn" aria-label="Play Again">
-                    <img src="/images/buttons/botonplayagain.png" alt="Play Again" class="max-w-32">
+                    <img src="../images/buttons/botonplayagain.png" alt="Play Again" class="max-w-32">
                 </button>
             </div>
             <div class="action-btn-wrap">
                 <button id="backToMenuBtn" class="action-img-btn" aria-label="Back to Menu">
-                    <img src="/images/buttons/boton_back.png" alt="Back to Menu" class="max-w-32">
+                    <img src="../images/buttons/boton_back.png" alt="Back to Menu" class="max-w-32">
                 </button>
             </div>
         </div>
@@ -547,7 +547,7 @@
                 this.disabled = true;
                 
                     setTimeout(() => {
-                    window.location.href = '/pages/game_canvas.html';
+                    window.location.href = 'game_canvas.html';
                 }, 800);
                 });
             }
@@ -560,7 +560,7 @@
                 this.disabled = true;
                 
                 setTimeout(() => {
-                    window.location.href = '/pages/welcome.html';
+                    window.location.href = 'welcome.html';
                 }, 800);
                 });
             }
@@ -569,7 +569,7 @@
             const viewLeaderboardBtn = document.getElementById('viewLeaderboardBtn');
             if (viewLeaderboardBtn) {
                 viewLeaderboardBtn.addEventListener('click', function() {
-                    window.location.href = '/pages/leaderboard.html';
+                    window.location.href = 'leaderboard.html';
                 });
             }
             
@@ -713,6 +713,51 @@
                     }
                     break;
             }
+        });
+
+        // Initialize audio system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // Play game over sound
+            if (window.playGameOver) {
+                setTimeout(() => {
+                    window.playGameOver();
+                }, 500);
+            }
+        });
+    </script>
+    <!-- Audio System -->
+    <script>
+        // Simple and reliable path detection for Live Server from pages/ directory
+        function getScriptPath(scriptPath) {
+            // When Live Server runs from pages/ directory, we need to go up one level
+            // Check if we're in pages/ directory by looking at the current pathname
+            const currentPath = window.location.pathname;
+            const isInPagesDir = currentPath.includes('/pages/') || currentPath.endsWith('.html');
+            
+            if (isInPagesDir) {
+                // We're in pages/ directory, so audio scripts are in ../js/
+                return '../js/' + scriptPath.replace(/^\/js\//, '');
+            } else {
+                // We're in root, so audio scripts are in js/
+                return 'js/' + scriptPath.replace(/^\/js\//, '');
+            }
+        }
+        
+        // Load scripts with correct paths
+        function loadScript(src) {
+            const script = document.createElement('script');
+            script.src = getScriptPath(src);
+            console.log('Loading script from:', script.src);
+            script.onerror = () => console.warn('Failed to load script:', src, 'from', script.src);
+            document.head.appendChild(script);
+            return new Promise((resolve) => {
+                script.onload = resolve;
+            });
+        }
+        
+        // Load scripts sequentially
+        loadScript('/js/audioManager.js').then(() => {
+            loadScript('/js/muteButton.js');
         });
     </script>
 <script id="dhws-dataInjector" src="/dhws-data-injector.js"></script>

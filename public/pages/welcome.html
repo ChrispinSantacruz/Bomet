@@ -4,8 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bomet Shooter - Welcome</title>
-    <link rel="stylesheet" href="/css/main.css" />
-    <link rel="icon" type="image/png" href="/images/personajes/vida.png" />
+    <link rel="stylesheet" href="../css/main.css" />
+    <link rel="icon" type="image/png" href="../images/personajes/vida.png" />
     <style>
         /* Galaxy Background Animation */
             /* Fondo personalizado con imagen */
@@ -15,7 +15,7 @@
                 left: 0;
                 width: 100vw;
                 height: 100vh;
-                background: url('/images/backgroundmenu.png') center center/cover no-repeat;
+                background: url('../images/backgroundmenu.png') center center/cover no-repeat;
                 z-index: -2;
             }
             .custom-bg-body {
@@ -232,7 +232,6 @@
             }
         }
     </style>
-<script type="module" src="https://static.rocket.new/rocket-web.js?_cfg=https%3A%2F%2Fbometshoo6010back.builtwithrocket.new&_be=https%3A%2F%2Fapplication.rocket.new&_v=0.1.8"></script>
 </head>
 <body class="min-h-screen flex items-center justify-center font-body overflow-hidden">
     <!-- Fondo con imagen backgroundmenu.png -->
@@ -247,7 +246,7 @@
     <div class="welcome-container w-full max-w-lg mx-auto px-6 py-8 fade-in">
         <!-- Game Title -->
         <div class="text-center mb-8 fade-in-delay-1">
-            <img src="/images/components/logo.png" alt="Bomet Shooter Logo" style="width:38vw; max-width:420px; min-width:180px; margin:0 auto 2vh auto;" />
+            <img src="../images/components/logo.png" alt="Bomet Shooter Logo" style="width:38vw; max-width:420px; min-width:180px; margin:0 auto 2vh auto;" />
         </div>
 
         <!-- Personalized Greeting -->
@@ -259,14 +258,14 @@
 
         <!-- Navigation Menu -->
         <div class="space-y-4 fade-in-delay-2 flex flex-col items-center justify-center">
-            <a href="/pages/game_canvas.html" class="block mb-2">
-                <img src="/images/buttons/botonplaymenu.png" alt="Play" style="width: 260px; max-width: 80vw;" />
+            <a href="game_canvas.html" class="block mb-2">
+                <img src="../images/buttons/botonplaymenu.png" alt="Play" style="width: 260px; max-width: 80vw;" />
             </a>
-            <a href="/pages/instructions.html" class="block mb-2">
-                <img src="/images/buttons/botoninstrucciones.png" alt="Instructions" style="width: 260px; max-width: 80vw;" />
+            <a href="instructions.html" class="block mb-2">
+                <img src="../images/buttons/botoninstrucciones.png" alt="Instructions" style="width: 260px; max-width: 80vw;" />
             </a>
-            <a href="/pages/leaderboard.html" class="block">
-                <img src="/images/buttons/botonleaderboards.png" alt="Leaderboard" style="width: 260px; max-width: 80vw;" />
+            <a href="leaderboard.html" class="block">
+                <img src="../images/buttons/botonleaderboards.png" alt="Leaderboard" style="width: 260px; max-width: 80vw;" />
             </a>
         </div>
 
@@ -290,7 +289,7 @@
             // Check if player is logged in
             const playerName = localStorage.getItem('bometPlayerName');
             if (!playerName) {
-                window.location.href = '/pages/login.html';
+                window.location.href = 'login.html';
                 return;
             }
             // Set greeting
@@ -350,7 +349,7 @@
 
                 // Simulate logout process and redirect
                 setTimeout(() => {
-                    window.location.href = '/pages/login.html';
+                    window.location.href = 'login.html';
                 }, 1000);
             }
         }
@@ -387,15 +386,19 @@
 
         // Add keyboard navigation
         document.addEventListener('keydown', function(e) {
+            // Detect if running from pages/ directory directly
+            const isFromPagesDir = !window.location.pathname.includes('/pages/');
+            const basePath = isFromPagesDir ? '' : '/pages';
+            
             switch(e.key) {
                 case '1':
-                    window.location.href = '/pages/game_canvas.html';
+                    window.location.href = basePath + '/game_canvas.html';
                     break;
                 case '2':
-                    window.location.href = '/pages/instructions.html';
+                    window.location.href = basePath + '/instructions.html';
                     break;
                 case '3':
-                    window.location.href = '/pages/leaderboard.html';
+                    window.location.href = basePath + '/leaderboard.html';
                     break;
                 case 'Escape':
                     handleLogout();
@@ -405,6 +408,47 @@
 
         // Update stats periodically if user stays on page
         setInterval(updateLastLoginTime, 60000); // Update every minute
+
+        // Initialize audio system when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            // El nuevo sistema se activará automáticamente con la primera interacción
+            console.log('Welcome page loaded - audio will be enabled on first user interaction');
+        });
+    </script>
+    <!-- Audio System -->
+    <script>
+        // Simple and reliable path detection for Live Server from pages/ directory
+        function getScriptPath(scriptPath) {
+            // When Live Server runs from pages/ directory, we need to go up one level
+            // Check if we're in pages/ directory by looking at the current pathname
+            const currentPath = window.location.pathname;
+            const isInPagesDir = currentPath.includes('/pages/') || currentPath.endsWith('.html');
+            
+            if (isInPagesDir) {
+                // We're in pages/ directory, so audio scripts are in ../js/
+                return '../js/' + scriptPath.replace(/^\/js\//, '');
+            } else {
+                // We're in root, so audio scripts are in js/
+                return 'js/' + scriptPath.replace(/^\/js\//, '');
+            }
+        }
+        
+        // Load scripts with correct paths
+        function loadScript(src) {
+            const script = document.createElement('script');
+            script.src = getScriptPath(src);
+            console.log('Loading script from:', script.src);
+            script.onerror = () => console.warn('Failed to load script:', src, 'from', script.src);
+            document.head.appendChild(script);
+            return new Promise((resolve) => {
+                script.onload = resolve;
+            });
+        }
+        
+        // Load scripts sequentially
+        loadScript('/js/audioManager.js').then(() => {
+            loadScript('/js/muteButton.js');
+        });
     </script>
 <script id="dhws-dataInjector" src="/dhws-data-injector.js"></script>
 </body>
