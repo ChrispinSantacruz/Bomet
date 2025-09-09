@@ -10,16 +10,14 @@ services:
     rootDir: backend
     buildCommand: "npm install"
     startCommand: "npm start"
-    autoDeploy: true
-    healthCheckPath: "/healthz"
-    envVars:
-      - key: MONGODB_URI
-        value: "<SET_IN_DASHBOARD>"
-      - key: ADMIN_KEY
-        value: "<SET_IN_DASHBOARD_OPTIONAL>"
+  autoDeploy: true
+  healthCheckPath: "/healthz"
 
 # Notes:
 # - When creating the Blueprint in Render pick this repository and branch (main).
-# - Set MONGODB_URI and ADMIN_KEY in the Render dashboard (Environment > Environment Variables).
+# - IMPORTANT: do NOT add placeholder env vars in this file. Instead, set the following
+#   Environment Variables in the Render dashboard (Service > Environment > Environment Variables):
+#     - MONGODB_URI = <your mongodb connection string, starts with mongodb:// or mongodb+srv://>
+#     - ADMIN_KEY = <optional admin key used to clear leaderboard>
 # - If you'd like Render to also host the frontend, I can add a separate static site
 #   configuration after you confirm the backend entry is accepted.

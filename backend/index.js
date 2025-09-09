@@ -5,7 +5,16 @@ const cors = require('cors');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: [
+    'https://www.bometgame.fun',
+    'https://bometgame.fun',
+    'http://localhost:3000',
+    'http://localhost:5500',
+    'http://127.0.0.1:5500'
+  ],
+  credentials: true
+}));
 app.use(express.json());
 
 // Simple request logger to trace incoming requests

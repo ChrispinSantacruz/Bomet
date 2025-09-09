@@ -279,14 +279,9 @@
 </head>
 <body class="min-h-screen flex items-center justify-center font-body overflow-hidden">
     <script>
-        // Optionally set backend URL; leave empty to use localStorage-only behavior
-        if (!window.__BACKEND_URL__) {
-            if ((location.hostname === 'localhost' || location.hostname === '127.0.0.1') && location.port === '5500') {
-                window.__BACKEND_URL__ = 'http://localhost:3000';
-            } else {
-                window.__BACKEND_URL__ = '';
-            }
-        }
+        // Set backend URL to the deployed Render service
+        window.__BACKEND_URL__ = 'https://bomet-backend.onrender.com';
+        console.log('Backend URL configured:', window.__BACKEND_URL__);
     </script>
     <!-- Game Over Background -->
     <div class="galaxy-bg"></div>
