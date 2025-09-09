@@ -24,6 +24,23 @@
             max-width: 420px;
             min-width: 180px;
         }
+        
+        /* Responsive logo adjustments for larger screens */
+        @media (min-width: 1200px) {
+            .logo-instrucciones {
+                margin: -3vh auto 2vh auto; /* Subir logo 25% en monitores grandes */
+                width: 35vw;
+                max-width: 450px;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .logo-instrucciones {
+                margin: -5vh auto 2vh auto; /* Subir aún más en monitores extra grandes */
+                width: 32vw;
+                max-width: 500px;
+            }
+        }
         .center-instrucciones {
             display: flex;
             justify-content: center;

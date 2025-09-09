@@ -221,6 +221,15 @@
             .logo-responsive {
                 width: 30vw;
                 max-width: 450px;
+                margin: -6vh auto 1vh auto; /* Subir logo 25% (6vh arriba) en monitores grandes */
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .logo-responsive {
+                width: 28vw;
+                max-width: 500px;
+                margin: -8vh auto 1vh auto; /* Subir aún más en monitores extra grandes */
             }
         }
 

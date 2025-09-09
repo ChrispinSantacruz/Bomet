@@ -709,7 +709,7 @@
                         this.maxHealth = 1;
                         this.color = '#00AA00';
                         this.points = 5;
-                        this.shootCooldown = 40 + Math.random() * 60; // Más rápido
+                        this.shootCooldown = 30 + Math.random() * 50; // Más rápido y frecuente
                         this.weaponType = 'normal'; // Solo disparos normales
                         break;
                     case 'airplane':
@@ -717,7 +717,7 @@
                         this.maxHealth = 2;
                         this.color = '#FF69B4';
                         this.points = 5;
-                        this.shootCooldown = 50 + Math.random() * 70; // Más rápido
+                        this.shootCooldown = 35 + Math.random() * 55; // Más rápido y frecuente
                         this.weaponType = 'normal'; // Solo disparos normales
                         break;
                     case 'spaceBoss':
@@ -729,7 +729,7 @@
                         this.height = 60;
                         this.speed = 0.4;
                         this.targetY = 80;
-                        this.shootCooldown = 60 + Math.random() * 80; // Más rápido
+                        this.shootCooldown = 40 + Math.random() * 60; // Más rápido y frecuente
                         this.weaponType = 'normal'; // Solo disparos normales
                         break;
                     case 'boss':
@@ -738,7 +738,7 @@
                         this.color = '#FF0000';
                         this.points = 50;
                         this.targetY = 60;
-                        this.shootCooldown = 80 + Math.random() * 100; // Más rápido
+                        this.shootCooldown = 50 + Math.random() * 70; // Más rápido y frecuente
                         this.weaponType = 'normal'; // Solo disparos normales
                         break;
                     default: // 'basic' - enemigo cuadrado rojo (enemigo1.png)
@@ -746,7 +746,7 @@
                         this.maxHealth = 1;
                         this.color = '#FF3366';
                         this.points = 1; // 1 punto en lugar de 10
-                        this.shootCooldown = 60 + Math.random() * 80; // Más rápido
+                        this.shootCooldown = 40 + Math.random() * 60; // Más rápido y frecuente
                         this.weaponType = 'normal'; // Solo disparos normales
                         break;
                 }
@@ -776,26 +776,26 @@
                     if (this.shootCooldown > 0) {
                         this.shootCooldown--;
                     } else {
-                        // Only shoot with a 25% chance per cycle - más frecuente
-                        if (Math.random() < 0.25) {
+                        // Only shoot with a 40% chance per cycle - mucho más frecuente
+                        if (Math.random() < 0.40) {
                             this.shoot();
                         }
                         // Reset cooldown for continuous shooting
                         switch(this.type) {
                             case 'helicopter':
-                                this.shootCooldown = 40 + Math.random() * 60; // Más rápido
+                                this.shootCooldown = 30 + Math.random() * 50; // Más rápido y frecuente
                                 break;
                             case 'airplane':
-                                this.shootCooldown = 50 + Math.random() * 70; // Más rápido
+                                this.shootCooldown = 35 + Math.random() * 55; // Más rápido y frecuente
                                 break;
                             case 'spaceBoss':
-                                this.shootCooldown = 60 + Math.random() * 80; // Más rápido
+                                this.shootCooldown = 40 + Math.random() * 60; // Más rápido y frecuente
                                 break;
                             case 'boss':
-                                this.shootCooldown = 80 + Math.random() * 100; // Más rápido
+                                this.shootCooldown = 50 + Math.random() * 70; // Más rápido y frecuente
                                 break;
                             default:
-                                this.shootCooldown = 60 + Math.random() * 80; // Más rápido
+                                this.shootCooldown = 40 + Math.random() * 60; // Más rápido y frecuente
                                 break;
                         }
                     }
@@ -804,7 +804,7 @@
 
             shoot() {
                 // Solo disparos normales simples
-                const bulletSpeed = 2.1;
+                const bulletSpeed = 2.2; // Aumentado 5% para mayor dificultad
                 const bulletWidth = 10; // Más grandes
                 const bulletHeight = 16; // Más grandes
 
