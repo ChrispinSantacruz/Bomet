@@ -155,13 +155,52 @@
             border: 2px dashed rgba(0, 255, 255, 0.3);
         }
 
+        /* Leaderboard Responsive Positioning */
+        .leaderboard-responsive {
+            max-width: 35vw;
+            min-width: 400px;
+            margin: 12vh 0 0 7vw;
+            position: relative;
+        }
+
+        /* Desktop adjustments */
+        @media (min-width: 1200px) {
+            .leaderboard-responsive {
+                max-width: 30vw;
+                min-width: 450px;
+                margin: 15vh 0 0 9vw;
+            }
+        }
+
+        @media (min-width: 1400px) {
+            .leaderboard-responsive {
+                max-width: 25vw;
+                min-width: 500px;
+                margin: 18vh 0 0 11vw;
+            }
+        }
+
+        /* Tablet adjustments */
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .leaderboard-responsive {
+                max-width: 45vw;
+                min-width: 350px;
+                margin: 10vh 0 0 4vw;
+            }
+        }
+
         /* Mobile Optimizations */
         @media (max-width: 768px) {
+            .leaderboard-responsive {
+                max-width: 90vw;
+                min-width: 280px;
+                margin: 8vh 1rem 0 1rem;
+                left: auto;
+                transform: none;
+            }
+            
             .leaderboard-container {
-                margin: 1rem;
                 padding: 1.5rem;
-                margin-left: -3vw !important;
-                margin-right: auto !important;
             }
             
             .leaderboard-entry {
@@ -194,8 +233,8 @@
     <div class="w-full max-w-4xl mx-auto px-4 py-8 fade-in">
 
 
-        <!-- Leaderboard Container (ancho reducido) -->
-    <div class="leaderboard-container rounded-xl p-6 md:p-8 mb-8 fade-in-delay" style="max-width: 400px; margin-left:14vw; margin-right:auto; margin-top:12vh;">
+        <!-- Leaderboard Container (centrado responsivo) -->
+        <div class="leaderboard-container rounded-xl p-6 md:p-8 mb-8 fade-in-delay leaderboard-responsive">
             <div id="leaderboardContent">
                 <!-- Leaderboard entries will be populated by JavaScript -->
             </div>
@@ -386,14 +425,8 @@
 
         // Initialize audio system when page loads
         document.addEventListener('DOMContentLoaded', function() {
-            // Solo intentar reproducir si el audio ya está habilitado
-            if (window.playMenuMusic) {
-                setTimeout(() => {
-                    if (window.audioManager && window.audioManager.audioEnabled && !window.audioManager.isMuted) {
-                        window.playMenuMusic();
-                    }
-                }, 500);
-            }
+            // El nuevo sistema se activará automáticamente con la primera interacción
+            console.log('Leaderboard page loaded - audio will be enabled on first user interaction');
         });
     </script>
     <!-- Audio System -->

@@ -187,14 +187,40 @@
                 min-height: 60px;
                 font-size: 18px;
             }
-            /* Make the logo oversized on mobile (over 100vw) and visually center it */
-            .welcome-container .text-center img {
-                width: 100vw !important; /* reduced by 20% from 150vw */
-                max-width: none !important;
+        }
+
+        /* Logo Responsive Styles */
+        .logo-responsive {
+            width: 35vw;
+            max-width: 380px;
+            min-width: 200px;
+            height: auto;
+            margin: 0 auto 1vh auto;
+            display: block;
+        }
+
+        /* Responsive logo adjustments */
+        @media (max-width: 768px) {
+            .logo-responsive {
+                width: 85vw;
+                max-width: none;
+                min-width: 180px;
+                margin: 0 auto 1vh auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-responsive {
+                width: 90vw;
                 min-width: 160px;
-                display: block;
-                margin: 0 auto 2vh auto;
-                margin-left: -4vw !important; /* center the oversized image (120vw -> shift left by (120-100)/2 = 10vw) */
+                margin: 0 auto 0.5vh auto;
+            }
+        }
+
+        @media (min-width: 1200px) {
+            .logo-responsive {
+                width: 30vw;
+                max-width: 450px;
             }
         }
 
@@ -245,12 +271,12 @@
     <!-- Main Welcome Container -->
     <div class="welcome-container w-full max-w-lg mx-auto px-6 py-8 fade-in">
         <!-- Game Title -->
-        <div class="text-center mb-8 fade-in-delay-1">
-            <img src="../images/components/logo.png" alt="Bomet Shooter Logo" style="width:38vw; max-width:420px; min-width:180px; margin:0 auto 2vh auto;" />
+        <div class="text-center mb-6 fade-in-delay-1">
+            <img src="../images/components/logo.png" alt="Bomet Shooter Logo" class="logo-responsive" />
         </div>
 
         <!-- Personalized Greeting -->
-        <div class="text-center mb-12">
+        <div class="text-center mb-10">
         <h2 id="playerGreeting" class="font-heading text-2xl md:text-3xl font-bold text-accent welcome-pulse mb-2">
             Welcome, <span id="playerNameSpan"></span>
             </h2>
